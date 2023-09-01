@@ -101,7 +101,7 @@ inner join dim_repondents D on D.respondent_Id = A.respondent_id
  
  # c.	What factors influence respondents' purchase decisions, such as price range and limited edition packaging
  select L.current_brands ,L.price_range,L.num  
- from (select current_brands ,price_range ,count(*) as num from fact_survey_responses group by 1, 2 order by count(*) desc)L ;
+ from (select current_brands ,price_range ,count(*) as num from fact_survey_responses group by 1, 2 order by num desc)L ;
 
 # Metrix
 select B.City ,A.Current_brands, A.Consume_frequency, 
