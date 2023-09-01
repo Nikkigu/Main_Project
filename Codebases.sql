@@ -15,6 +15,13 @@ where gender = 'male';
   group by age)b
   where b.num = (select max(a.num) from (select  count(*) as num , age  from dim_repondents 
   group by age) as a);
+
+ # b.What are the typical consumption situations for energy drinks among respondents? 
+ select D.age ,B.Typical_Consumption_Situations,count(*) as Total
+from Dim_repondents D inner join 
+fact_survey_responses B 
+on D.Respondent_ID = B.Respondent_ID
+group by 1,2;
   
   # b.	Which age group prefers energy drinks more by windows function
 select b.age , b.num,rank() over(order by b.num desc) as dup
