@@ -113,7 +113,7 @@ on A.Respondent_Id = C.Respondent_Id
 inner join dim_cities B 
 on C.city_Id = B.city_Id 
 where consume_frequency = 'Rarely'
-group by 1;
+
 
 
  
