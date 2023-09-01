@@ -40,7 +40,7 @@ group by 1,2;
   # # a.	What are the preferred ingredients of energy drinks among respondents
   select a.Ingredients_expected ,a.Num_of_consumption ,consume_reason 
   from (select Ingredients_expected ,count(Ingredients_expected) as Num_of_consumption , consume_reason from fact_survey_responses
-  group by 1 order by 2 desc)a;
+  group by 1,3 order by 2 desc)a;
   
   # # b.	What packaging preferences do respondents have for energy drinks
   select Packaging_preference, count(*) as num from fact_survey_responses
@@ -68,14 +68,14 @@ from ( select marketing_channels ,rank() over(order by count(*) desc ) as rnk
  where P.rnk =1;
 
 select P.marketing_channels , D.age ,P.num
-from ( select marketing_channels, Respondent_Id ,count(*) as num ,rank() over(order by count(*) desc ) as rnk 
- from fact_survey_responses group by 1 ) P
+from ( select marketing_channels, Respondent_Id ,count(*) as num 
+ from fact_survey_responses group by 1,2 ) P
 inner join dim_repondents D
 on D.Respondent_Id = P.Respondent_Id;
 
 # b.	How effective are different marketing strategies and channels in reaching our customers
 select General_perception, consume_frequency ,marketing_channels , count(*) from fact_survey_responses
-group by 3 order by count(*) desc;
+group by 1,2,3 order by count(*) desc;
 
 # a.	What do people think about our brand? (overall rating) 
 select avg(Taste_experience) as Rating
@@ -92,16 +92,16 @@ group by 1 , 2;
 
 # b.	Which cities do we need to focus more on 
 select current_brands , Purchase_location , count(*) from fact_survey_responses 
-group by 2;
+group by 1,2;
 
 # b.	What are the typical consumption situations for energy drinks among respondents
 select D.age,A.Consume_reason ,count(*) as total from fact_survey_responses A
 inner join dim_repondents D on D.respondent_Id = A.respondent_id 
- group by 1 order by count(*) desc;
+ group by 1,2 order by count(*) desc;
  
  # c.	What factors influence respondents' purchase decisions, such as price range and limited edition packaging
  select L.current_brands ,L.price_range,L.num  
- from (select current_brands ,price_range ,count(*) as num from fact_survey_responses group by 2 order by count(*) desc)L ;
+ from (select current_brands ,price_range ,count(*) as num from fact_survey_responses group by 1, 2 order by count(*) desc)L ;
 
 # Metrix
 select B.City ,A.Current_brands, A.Consume_frequency, 
